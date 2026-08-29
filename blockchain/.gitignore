@@ -1,0 +1,16 @@
+node_modules
+artifacts
+cache
+coverage
+coverage.json
+typechain
+typechain-types
+
+# Environment / secrets
+.env
+
+# Hardhat Ignition default deployments
+ignition/deployments
+
+# Keep deployment artifacts (address + abi) EXCEPT env-based ones
+# deployments/*.json is intentionally committed so backend/frontend can read it
