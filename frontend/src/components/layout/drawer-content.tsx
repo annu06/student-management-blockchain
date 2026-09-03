@@ -12,6 +12,7 @@ import {
   Typography
 } from '@mui/material';
 import { blue } from '@mui/material/colors';
+import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getUserMenus } from '@/domains/auth/slice';
@@ -77,6 +78,14 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
               );
             }
           })}
+
+        {/* Blockchain Certificate Verification (always available) */}
+        <ListItemButton component={Link} to='/app/certificates'>
+          <ListItemIcon>
+            <VerifiedOutlinedIcon color='primary' />
+          </ListItemIcon>
+          <ListItemText primary='Certificates' />
+        </ListItemButton>
       </List>
     </div>
   );

@@ -22,6 +22,8 @@ export const AppRoot = () => {
   if (isError) return <PermissionErrorLayout error={errorMessage} />;
   if (!hasData) return <PermissionErrorLayout error='No permission data available' />;
 
-  const isRouteAvailable = doesRouteExist(currentPath);
+  // Certificate Verification (blockchain feature) is always accessible.
+  const alwaysAllowed = ['certificates'];
+  const isRouteAvailable = doesRouteExist(currentPath) || alwaysAllowed.includes(currentPath);
   return <MainLayout>{isRouteAvailable ? <Outlet /> : <NotFound />}</MainLayout>;
 };

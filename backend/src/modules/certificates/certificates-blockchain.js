@@ -36,13 +36,22 @@ let _contract = null;
 let _provider = null;
 
 /**
+ * Build a JsonRpcProvider with a static network to avoid the network
+ * auto-detection handshake, which can hang on some Node versions.
+ */
+function buildProvider(rpcUrl) {
+    const chainId = Number(process.env.BLOCKCHAIN_CHAIN_ID || 31337);
+    return new ethers.JsonRpcProvider(rpcUrl, chainId, { staticNetwork: true });
+}
+
+/**
  * Returns a read-only contract instance (for verification queries).
  */
 function getReadContract() {
     if (_contract) return _contract;
     const deployment = loadDeployment();
     const rpcUrl = process.env.BLOCKCHAIN_RPC_URL || "http://127.0.0.1:8545";
-    _provider = new ethers.JsonRpcProvider(rpcUrl);
+    _provider = buildProvider(rpcUrl);
     _contract = new ethers.Contract(deployment.address, deployment.abi, _provider);
     return _contract;
 }
@@ -54,7 +63,7 @@ function getReadContract() {
 function getWriteContract() {
     const deployment = loadDeployment();
     const rpcUrl = process.env.BLOCKCHAIN_RPC_URL || "http://127.0.0.1:8545";
-    const provider = new ethers.JsonRpcProvider(rpcUrl);
+    const provider = buildProvider(rpcUrl);
     const pk = process.env.ISSUER_PRIVATE_KEY;
     if (!pk) throw new Error("ISSUER_PRIVATE_KEY not configured");
     const signer = new ethers.Wallet(pk, provider);
